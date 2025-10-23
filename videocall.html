@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Video Call Counselor - Manoraksha</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .video-container {
+      position: relative;
+      height: 400px;
+      margin: 1rem 0;
+      border-radius: var(--border-radius);
+      overflow: hidden;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    .video-placeholder {
+      height: 100%;
+      background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); /* Deep Blue Gradient */
+      border: 1px solid var(--primary-color);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      color: #fff;
+      text-align: center;
+    }
+    .video-placeholder p {
+        margin-top: 15px;
+        font-size: 1rem;
+        color: rgba(255, 255, 255, 0.8);
+    }
+    .action-buttons {
+        margin-top: 1.5rem;
+    }
+    .action-buttons button {
+        padding: 10px 20px;
+        margin: 0 10px;
+        font-size: 1rem;
+    }
+    #endCallBtn {
+        background-color: #dc3545; /* Red for end call */
+    }
+    #endCallBtn:hover {
+        background-color: #c82333;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>📹 One-on-One Video Counseling</h2>
+    <p>You will be connected to a certified mental health professional based on your selected identity.</p>
+
+    <div class="video-container">
+      <div id="videoArea" class="video-placeholder">
+        <h3>Call Status: Connecting...</h3>
+        <p>Please wait while we set up your session.</p>
+      </div>
+    </div>
+    
+    <div class="action-buttons">
+        <button id="startCallBtn" onclick="startCall()">Start Call</button>
+        <button id="endCallBtn" onclick="endCall()" disabled>End Call</button>
+    </div>
+
+    <button onclick="window.location.href='dashboard.html'" style="margin-top: 2rem;">⬅ Back to Dashboard</button>
+  </div>
+
+  <script>
+    const startBtn = document.getElementById('startCallBtn');
+    const endBtn = document.getElementById('endCallBtn');
+    const videoArea = document.getElementById('videoArea');
+    const identity = localStorage.getItem('sessionIdentity') || 'anonymous';
+    const userEmail = localStorage.getItem('email');
+
+    function updateStatus(title, message, startEnabled, endEnabled) {
+        videoArea.innerHTML = `<h3>${title}</h3><p>${message}</p>`;
+        startBtn.disabled = startEnabled;
+        endBtn.disabled = endEnabled;
+    }
+
+    function startCall() {
+        updateStatus(
+            'Call Status: Session Active', 
+            `Simulating connection with a counselor. Identity: ${identity === 'named' && userEmail ? userEmail : 'Anonymous'}.`, 
+            true, 
+            false
+        );
+        alert("Simulating call started. In a real application, WebRTC/Jitsi would load here.");
+    }
+
+    function endCall() {
+        updateStatus(
+            'Call Status: Call Ended', 
+            'Thank you for your session. Returning to dashboard in 3 seconds...', 
+            false, 
+            true
+        );
+        
+        // Remove temporary identity status
+        localStorage.removeItem('sessionIdentity'); 
+
+        setTimeout(() => {
+            window.location.href='dashboard.html';
+        }, 3000);
+    }
+    
+    // Initial display logic
+    document.addEventListener('DOMContentLoaded', () => {
+        let statusMessage;
+        if (identity === 'named' && userEmail) {
+            statusMessage = `Your session is identified as **${userEmail}**. Click 'Start Call'.`;
+        } else {
+             statusMessage = `Your session is **Anonymous**. Click 'Start Call'.`;
+        }
+        updateStatus('Call Status: Ready to Connect', statusMessage, false, true);
+    });
+
+  </script>
+</body>
+</html>

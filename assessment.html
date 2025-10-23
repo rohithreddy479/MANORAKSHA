@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Assessments - Manoraksha</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    /* General Form Styling */
+    form {
+      margin-top: 1.5rem;
+      padding: 20px;
+      border: 1px solid var(--border-color);
+      border-radius: var(--border-radius);
+      background: var(--background-light);
+    }
+    
+    /* Section Separation */
+    .section {
+      margin-bottom: 3rem;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid var(--border-color);
+    }
+    .section:last-child {
+      border-bottom: none;
+    }
+
+    /* Labels and Questions */
+    label {
+      font-weight: 500;
+      display: block;
+      margin-top: 1rem;
+      margin-bottom: 0.3rem;
+      color: var(--text-dark);
+    }
+
+    /* Input/Select Styling */
+    textarea, select {
+      width: 100%;
+      padding: 10px;
+      margin: 0.5rem 0 1rem 0;
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+      background: var(--background-page);
+      font-size: 1rem;
+    }
+    
+    /* Result Display */
+    #phqResult, #gadResult, #storyResult {
+        margin-top: 1.5rem;
+        padding: 15px;
+        background-color: #e6f0ff; /* Light blue result background */
+        border-left: 5px solid var(--primary-color);
+        border-radius: 5px;
+        font-weight: 500;
+    }
+
+    /* Button alignment within sections */
+    .section button {
+        margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>🧠 Mental Health Assessment</h2>
+
+    <div class="section">
+      <h3>📘 Narrative Story-Based Analysis</h3>
+      <textarea id="storyInput" rows="5" placeholder="Describe a recent emotionally challenging situation..."></textarea>
+      <button onclick="analyzeNarrative()">Analyze</button>
+      <p id="storyResult"></p>
+    </div>
+
+    <div class="section">
+      <h3>📋 PHQ-9 (Depression Test)</h3>
+      <form id="phqForm">
+        <label for="phq1">Q1: Little interest or pleasure in doing things?</label>
+        <select name="phq1" id="phq1">
+          <option value="0">Not at all</option>
+          <option value="1">Several days</option>
+          <option value="2">More than half the days</option>
+          <option value="3">Nearly every day</option>
+        </select>
+
+        <label for="phq2">Q2: Feeling down, depressed, or hopeless?</label>
+        <select name="phq2" id="phq2">
+          <option value="0">Not at all</option>
+          <option value="1">Several days</option>
+          <option value="2">More than half the days</option>
+          <option value="3">Nearly every day</option>
+        </select>
+
+        <label for="phq3">Q3: Trouble falling or staying asleep, or sleeping too much?</label>
+        <select name="phq3" id="phq3">
+          <option value="0">Not at all</option>
+          <option value="1">Several days</option>
+          <option value="2">More than half the days</option>
+          <option value="3">Nearly every day</option>
+        </select>
+
+        <label for="phq4">Q4: Feeling tired or having little energy?</label>
+        <select name="phq4" id="phq4">
+          <option value="0">Not at all</option>
+          <option value="1">Several days</option>
+          <option value="2">More than half the days</option>
+          <option value="3">Nearly every day</option>
+        </select>
+
+        <label for="phq5">Q5: Poor appetite or overeating?</label>
+        <select name="phq5" id="phq5">
+          <option value="0">Not at all</option>
+          <option value="1">Several days</option>
+          <option value="2">More than half the days</option>
+          <option value="3">Nearly every day</option>
+        </select>
+
+        <label for="phq6">Q6: Feeling bad about yourself — or that you are a failure?</label>
+        <select name="phq6" id="phq6">
+          <option value="0">Not at all</option>
+          <option value="1">Several days</option>
+          <option value="2">More than half the days</option>
+          <option value="3">Nearly every day</option>
+        </select>
+
+        <label for="phq7">Q7: Trouble concentrating on things?</label>
+        <select name="phq7" id="phq7">
+          <option value="0">Not at all</option>
+          <option value="1">Several days</option>
+          <option value="2">More than half the days</option>
+          <option value="3">Nearly every day</option>
+        </select>
+
+        <label for="phq8">Q8: Moving or speaking slowly, or being restless?</label>
+        <select name="phq8" id="phq8">
+          <option value="0">Not at all</option>
+          <option value="1">Several days</option>
+          <option value="2">More than half the days</option>
+          <option value="3">Nearly every day</option>
+        </select>
+
+        <label for="phq9">Q9: Thoughts of hurting yourself or suicide?</label>
+        <select name="phq9" id="phq9">
+          <option value="0">Not at all</option>
+          <option value="1">Several days</option>
+          <option value="2">More than half the days</option>
+          <option value="3">Nearly every day</option>
+        </select>
+
+        <button type="button" onclick="calculatePHQ()">Submit PHQ-9</button>
+      </form>
+      <p id="phqResult"></p>
+    </div>
+
+    <div class="section">
+      <h3>📋 GAD-7 (Anxiety Test)</h3>
+      <form id="gadForm">
+        <label for="gad1">Q1: Feeling nervous, anxious, or on edge?</label>
+        <select name="gad1" id="gad1">
+          <option value="0">Not at all</option>
+          <option value="1">Several days</option>
+          <option value="2">More than half the days</option>
+          <option value="3">Nearly every day</option>
+        </select>
+
+        <label for="gad2">Q2: Not being able to stop or control worrying?</label>
+        <select name="gad2" id="gad2">
+          <option value="0">Not at all</option>
+          <option value="1">Several days</option>
+          <option value="2">More than half the days</option>
+          <option value="3">Nearly every day</option>
+        </select>
+
+        <label for="gad3">Q3: Worrying too much about different things?</label>
+        <select name="gad3" id="gad3">
+          <option value="0">Not at all</option>
+          <option value="1">Several days</option>
+          <option value="2">More than half the days</option>
+          <option value="3">Nearly every day</option>
+        </select>
+
+        <label for="gad4">Q4: Trouble relaxing?</label>
+        <select name="gad4" id="gad4">
+          <option value="0">Not at all</option>
+          <option value="1">Several days</option>
+          <option value="2">More than half the days</option>
+          <option value="3">Nearly every day</option>
+        </select>
+
+        <label for="gad5">Q5: Being so restless that it is hard to sit still?</label>
+        <select name="gad5" id="gad5">
+          <option value="0">Not at all</option>
+          <option value="1">Several days</option>
+          <option value="2">More than half the days</option>
+          <option value="3">Nearly every day</option>
+        </select>
+
+        <label for="gad6">Q6: Becoming easily annoyed or irritable?</label>
+        <select name="gad6" id="gad6">
+          <option value="0">Not at all</option>
+          <option value="1">Several days</option>
+          <option value="2">More than half the days</option>
+          <option value="3">Nearly every day</option>
+        </select>
+
+        <label for="gad7">Q7: Feeling afraid as if something awful might happen?</label>
+        <select name="gad7" id="gad7">
+          <option value="0">Not at all</option>
+          <option value="1">Several days</option>
+          <option value="2">More than half the days</option>
+          <option value="3">Nearly every day</option>
+        </select>
+
+        <button type="button" onclick="calculateGAD()">Submit GAD-7</button>
+      </form>
+      <p id="gadResult"></p>
+    </div>
+
+    <button onclick="window.location.href='dashboard.html'">⬅ Back to Dashboard</button>
+  </div>
+
+  <script>
+    function calculatePHQ() {
+      const form = document.getElementById("phqForm");
+      const values = [...form.elements]
+        .filter(el => el.tagName === "SELECT")
+        .map(el => parseInt(el.value));
+      const score = values.reduce((a, b) => a + b, 0);
+      document.getElementById("phqResult").innerText = `PHQ-9 Score: ${score} (${interpretScore(score, 'phq')})`;
+    }
+
+    function calculateGAD() {
+      const form = document.getElementById("gadForm");
+      const values = [...form.elements]
+        .filter(el => el.tagName === "SELECT")
+        .map(el => parseInt(el.value));
+      const score = values.reduce((a, b) => a + b, 0);
+      document.getElementById("gadResult").innerText = `GAD-7 Score: ${score} (${interpretScore(score, 'gad')})`;
+    }
+
+    function interpretScore(score, type) {
+      if (type === 'phq') {
+        if (score < 5) return "Minimal depression";
+        if (score < 10) return "Mild depression";
+        if (score < 15) return "Moderate depression";
+        if (score < 20) return "Moderately severe depression";
+        return "Severe depression";
+      } else {
+        if (score < 5) return "Minimal anxiety";
+        if (score < 10) return "Mild anxiety";
+        if (score < 15) return "Moderate anxiety";
+        return "Severe anxiety";
+      }
+    }
+
+    function analyzeNarrative() {
+      const input = document.getElementById("storyInput").value.trim();
+      if (!input) return alert("Please describe your situation.");
+
+      // Placeholder for AI integration
+      document.getElementById("storyResult").innerText = "✅ Story received. We will analyze it in future updates.";
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Manoraksha Dashboard</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    /* Ensure dashboard elements respect the new style.css properties */
+    .dashboard-container {
+        padding: 40px;
+    }
+    .dashboard-options {
+      /* Re-define flex layout to use the full width */
+      display: flex; 
+      justify-content: space-around;
+      flex-wrap: wrap;
+      gap: 25px; /* Matches new style.css gap */
+      margin-top: 3rem;
+    }
+    .option-card {
+      /* Ensure flex properties are correct for the cards to show up */
+      flex: 1 1 280px; 
+      /* Inherits beautiful styles from style.css now! */
+      min-height: 150px; /* Ensure a minimum height */
+    }
+    .option-card h3 {
+      /* Inherit color from style.css */
+      font-size: 1.5rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container dashboard-container">
+    <h1>Welcome to Manoraksha</h1>
+    <p id="welcomeText" style="font-size: 1.1rem; color: var(--secondary-color); font-weight: 600;"></p>
+    <p style="margin-bottom: 2rem;">Choose your path to mental wellness below.</p>
+
+    <div class="dashboard-options">
+      
+      <div class="option-card" onclick="goTo('chatbot.html')">
+        <h3>🤖 AI Counselor</h3>
+        <p>Talk one-on-one with our empathetic AI.</p>
+      </div>
+      
+      <div class="option-card" onclick="goTo('videocall.html')">
+        <h3>📹 Video Call</h3>
+        <p>Book a private session with a human counselor.</p>
+      </div>
+
+      <div class="option-card" onclick="goTo('express.html')">
+        <h3>💬 Express Feelings</h3>
+        <p>A safe space to write out your thoughts in a private journal.</p>
+      </div>
+
+      <div class="option-card" onclick="goTo('assessment.html')">
+        <h3>🧠 Assessment</h3>
+        <p>Take depression and anxiety self-assessments.</p>
+      </div>
+
+    </div>
+
+    <button onclick="logout()" style="margin-top: 3rem;">Logout / Change Mode</button>
+  </div>
+
+  <script>
+    const userMode = localStorage.getItem('userMode');
+    const userEmail = localStorage.getItem('email');
+
+    // Display welcome text based on mode
+    const welcomeText = userMode === 'logged-in' 
+      ? `Welcome back, **${userEmail}**!`
+      : "You are currently in **Guest Mode** (Anonymous).";
+    document.getElementById('welcomeText').innerHTML = welcomeText;
+    
+    // Simple Navigation function
+    function goTo(page) {
+      // Set the session identity based on login status for the next page
+      const defaultIdentity = (userMode === 'logged-in' && userEmail) ? 'named' : 'anonymous';
+      localStorage.setItem('sessionIdentity', defaultIdentity);
+
+      window.location.href = page;
+    }
+
+    function logout() {
+        localStorage.clear(); // Clear all user session data
+        window.location.href = 'index.html'; // Redirect to the login/index page
+    }
+  </script>
+</body>
+</html>

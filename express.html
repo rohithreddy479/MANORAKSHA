@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Express Your Feelings - Manoraksha</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    /* Journal Box */
+    #journalBox {
+      width: 100%;
+      height: 250px; /* Increased height for better writing experience */
+      padding: 1.2rem;
+      border: 1px solid var(--border-color);
+      border-radius: var(--border-radius);
+      resize: vertical; /* Allow resizing only vertically */
+      font-size: 1.1rem;
+      background: var(--background-page); /* Slightly tinted background */
+      box-shadow: inset 0 1px 3px rgba(0,0,0,0.05); /* Subtle inner shadow */
+    }
+    
+    /* Journal Log */
+    .log {
+      background: #fff; /* White background for readability */
+      padding: 1.5rem;
+      margin-top: 2rem;
+      border-radius: var(--border-radius);
+      max-height: 200px;
+      overflow-y: auto;
+      font-size: 0.9rem;
+      border: 1px solid var(--border-color);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+      color: var(--text-medium);
+    }
+
+    /* Style for individual log entries */
+    .log p {
+        border-bottom: 1px dashed var(--border-color);
+        padding-bottom: 10px;
+        margin-bottom: 10px;
+    }
+    .log p:last-child {
+        border-bottom: none;
+        margin-bottom: 0;
+        padding-bottom: 0;
+    }
+    .log strong {
+        color: var(--text-dark);
+        display: block;
+        margin-bottom: 5px;
+    }
+    
+    /* Button Layout */
+    .container > button {
+        margin-top: 1rem;
+    }
+    /* Separator for better button alignment */
+    .container > button:first-of-type {
+        margin-right: 10px;
+    }
+
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>💬 Express Your Feelings</h2>
+    <p>Write freely and anonymously. Your thoughts matter.</p>
+
+    <textarea id="journalBox" placeholder="Type your thoughts here..."></textarea>
+    <button onclick="saveEntry()">Save Entry</button>
+    <button onclick="window.location.href='dashboard.html'">⬅ Back to Dashboard</button>
+
+    <div id="journalLog" class="log"></div>
+  </div>
+
+  <script>
+    function saveEntry() {
+      const text = document.getElementById("journalBox").value.trim();
+      if (!text) return alert("Please enter something.");
+      
+      const oldLogs = localStorage.getItem("journal") || "[]";
+      const logs = JSON.parse(oldLogs);
+      logs.push({ text, date: new Date().toLocaleString() });
+      localStorage.setItem("journal", JSON.stringify(logs));
+
+      document.getElementById("journalBox").value = "";
+      showLogs();
+    }
+
+    function showLogs() {
+      const logs = JSON.parse(localStorage.getItem("journal") || "[]");
+      const output = logs.map(log => `<div><strong>${log.date}</strong><br>${log.text}</div><hr>`).reverse();
+      document.getElementById("journalLog").innerHTML = output.join("");
+    }
+
+    showLogs();
+  </script>
+</body>
+</html>

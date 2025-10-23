@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>AI Counselor - Manoraksha</title>
+  <link rel="stylesheet" href="style.css" />
+  
+  <style>
+    /* Use flexbox for a modern, full-height chat layout */
+    .container {
+        display: flex;
+        flex-direction: column;
+        max-width: 700px;
+        height: 80vh; /* Use a fixed height for the chat area */
+        margin: 40px auto;
+        padding: 0 20px;
+    }
+
+    /* Main Chat Display Area */
+    #chat {
+        flex-grow: 1; 
+        overflow-y: auto;
+        padding: 20px;
+        border: 1px solid #e0e0e0;
+        border-radius: var(--border-radius);
+        background: var(--background-light);
+        margin-bottom: 1rem;
+        display: flex;
+        flex-direction: column;
+        gap: 15px; 
+    }
+
+    /* Individual Message Bubble */
+    .message {
+        padding: 12px 18px;
+        border-radius: 20px; 
+        max-width: 85%;
+        line-height: 1.5;
+        box-shadow: 0 1px 2px rgba(0,0,0,0.08); 
+        font-size: 1rem;
+    }
+
+    /* User Message (Right-aligned, Primary Color) */
+    .user {
+        background-color: var(--primary-color); 
+        color: var(--text-light); 
+        align-self: flex-end; 
+        border-bottom-right-radius: 5px; 
+    }
+
+    /* Assistant Message (Left-aligned, Light Background) */
+    .assistant {
+        background-color: #f0f4f8; 
+        color: var(--text-dark);
+        align-self: flex-start; 
+        border-bottom-left-radius: 5px; 
+        border: 1px solid #e5e5e5;
+    }
+    
+    .message strong {
+        font-weight: 600;
+        display: block; 
+        margin-bottom: 2px;
+    }
+
+    /* Input/Send Layout */
+    .input-container {
+        display: flex;
+        gap: 10px;
+        padding-top: 10px;
+        border-top: 1px solid #e0e0e0; 
+    }
+
+    #userInput {
+        flex-grow: 1;
+        padding: 12px;
+        border: 1px solid #ccc;
+        border-radius: var(--border-radius);
+        transition: border-color 0.3s;
+    }
+    #userInput:focus {
+        border-color: var(--primary-color);
+        outline: none;
+    }
+
+    #sendBtn {
+        padding: 10px 20px;
+        background: var(--primary-color);
+        color: white;
+        border: none;
+        border-radius: var(--border-radius);
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+    #sendBtn:hover:not(:disabled) {
+        background-color: var(--secondary-color);
+    }
+    #sendBtn:disabled {
+        background-color: #ccc;
+        cursor: not-allowed;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>🤖 Manoraksha - AI Counselor</h2>
+    
+    <p id="identity-status" style="font-style: italic; margin-bottom: 1rem;"></p>
+
+    <div id="chat"></div> 
+
+    <div class="input-container">
+        <input type="text" id="userInput" placeholder="Type your message..." />
+        <button id="sendBtn">Send</button>
+    </div>
+    <button onclick="window.location.href='dashboard.html'" style="margin-top: 1rem;">
+        ⬅ Back to Dashboard
+    </button>
+  </div>
+
+  <script>
+    // Read the identity status set in the dashboard, or default to anonymous for safety
+    const identity = localStorage.getItem('sessionIdentity') || 'anonymous'; 
+    localStorage.removeItem('sessionIdentity'); 
+
+    const userEmail = localStorage.getItem('email');
+    let identityText;
+    
+    if (identity === 'named' && userEmail) {
+        identityText = `You are chatting as **${userEmail}** (session data is linked).`;
+    } else {
+        identityText = "You are chatting **anonymously** (session data is not linked to your user account).";
+    }
+
+    document.getElementById('identity-status').innerHTML = identityText;
+  </script>
+
+  <script src="chatbot.js"></script> 
+</body>
+</html>

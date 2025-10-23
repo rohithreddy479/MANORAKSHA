@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Manoraksha - Login/Register</title>
+  <style>
+    /* Google Fonts */
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+
+    /* Root variables for colors - matching style.css theme */
+    :root {
+      --primary-color: #4a6fa5; /* Muted Blue (Sign In) */
+      --secondary-color: #8c7851; /* Earthy Gold (Guest) */
+      --accent-color: #a54a6f; /* Muted Rose (Register) */
+      --background-light: #ffffff;
+      --text-dark: #1f2937;
+      --border-radius: 12px;
+      --transition-speed: 0.3s;
+    }
+
+    /* Reset & base */
+    * {
+      box-sizing: border-box;
+    }
+    body, html {
+      margin: 0; padding: 0; height: 100%;
+      font-family: 'Poppins', sans-serif;
+      
+      /* Background Image with Fixed Parallax Effect */
+      background: url('https://images.unsplash.com/photo-1549419163-f01e7195e340?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80') no-repeat center center;
+      background-size: cover;
+      background-attachment: fixed;
+      
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      overflow: hidden; 
+      justify-content: center; 
+      align-items: center; 
+    }
+
+    /* ATTRACTIVE GRADIENT OVERLAY (Deep Blue/Amethyst) */
+    body::before {
+      content: "";
+      position: fixed; 
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: linear-gradient(
+        135deg, 
+        rgba(30, 42, 65, 0.75) 0%, /* Deep Sapphire Blue */
+        rgba(80, 50, 100, 0.7) 100% /* Calming Amethyst */
+      );
+      z-index: 1;
+    }
+
+    .main-content {
+      position: relative;
+      z-index: 2;
+      width: 90%;
+      min-width: 630px; 
+      max-width: 1200px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 0;
+    }
+    
+    h1 {
+      font-size: 4rem; 
+      font-weight: 700;
+      color: #fff;
+      text-shadow: 0 4px 8px rgba(0,0,0,0.7);
+      margin-bottom: 50px; 
+    }
+    
+    /* --- BIG ACTION BOX STYLES (for Sign-in/Guest) --- */
+    .option-grid {
+      display: flex;
+      gap: 30px;
+      justify-content: center;
+      flex-wrap: nowrap; 
+      margin-top: 0;
+    }
+
+    .action-box {
+      background: rgba(255, 255, 255, 0.95);
+      color: var(--text-dark);
+      padding: 40px;
+      border-radius: var(--border-radius);
+      box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+      width: 300px;
+      min-height: 250px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: all var(--transition-speed);
+      cursor: pointer;
+      flex-shrink: 0; 
+    }
+
+    .action-box:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 50px rgba(0,0,0,0.5);
+    }
+    
+    .action-box h2 {
+      color: var(--primary-color);
+      font-size: 2rem;
+      margin-top: 0;
+      font-weight: 600;
+    }
+    
+    .action-box p {
+        font-size: 1.1rem;
+        margin-bottom: 15px;
+        color: #555;
+    }
+
+
+    .action-box button {
+      width: 100%;
+      padding: 15px 0;
+      background: var(--primary-color);
+      border-radius: var(--border-radius);
+      font-size: 1.1rem;
+      margin-top: 20px;
+      transition: background-color var(--transition-speed);
+      border: none;
+      cursor: pointer;
+    }
+
+    /* --- ATTRACTIVE MODAL/LOGIN WINDOW STYLES --- */
+    .modal-bg {
+      display: none; 
+      position: fixed; 
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0, 0, 0, 0.6); 
+      z-index: 1000;
+      justify-content: center; 
+      align-items: center;
+      backdrop-filter: blur(5px); 
+    }
+    
+    #authForm {
+        width: 100%;
+        max-width: 450px;
+        padding: 40px;
+        background: var(--background-light);
+        border-radius: var(--border-radius);
+        box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+        text-align: center;
+        color: var(--text-dark);
+        animation: fadeIn 0.3s ease-out;
+        max-height: 90vh; 
+        overflow-y: auto;
+    }
+    
+    #authForm h2 {
+        font-size: 2rem;
+        margin-bottom: 20px;
+        color: var(--accent-color);
+    }
+
+    /* LARGER Input Boxes */
+    #authForm input[type="email"], 
+    #authForm input[type="password"] {
+      width: 100%;
+      padding: 18px; 
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: var(--border-radius);
+      font-size: 1.1rem;
+      transition: border-color var(--transition-speed);
+    }
+    #authForm input[type="email"]:focus,
+    #authForm input[type="password"]:focus {
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 2px rgba(74, 111, 165, 0.2);
+        outline: none;
+    }
+    
+    .button-group {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+        margin-top: 10px;
+    }
+    
+    /* Global style for large buttons inside the modal */
+    #authForm button {
+      padding: 18px 0; 
+      font-size: 1.2rem; 
+      font-weight: 600; 
+      border-radius: var(--border-radius);
+      border: none;
+      cursor: pointer;
+      transition: background-color var(--transition-speed);
+      margin-top: 20px; /* Default margin for single buttons like Cancel */
+      color: white; /* Default text color for Sign In/Register */
+    }
+
+    .button-group button {
+        flex: 1;
+        margin-top: 0; /* Remove top margin from grouped buttons */
+    }
+
+    /* Custom class for the Cancel button: "Visible Half" look */
+    .modal-cancel-btn {
+        /* Translucent white background for 'visible half' effect */
+        background: rgba(255, 255, 255, 0.35) !important; 
+        color: var(--text-dark) !important; /* Dark text for contrast */
+        border: 1px solid rgba(0, 0, 0, 0.1) !important; /* Subtle border */
+        box-shadow: none !important;
+        margin-top: 20px; /* Restore margin after grouping */
+    }
+
+    /* Animation for modal entry */
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(-20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+</style>
+</head>
+<body>
+  <div class="main-content">
+    
+    <h1>Manoraksha</h1>
+
+    <div class="option-grid">
+      
+      <div id="signInRegisterBox" class="action-box" onclick="showAuthModal()">
+        <h2>Sign In / Register</h2>
+        <p>Access your linked history and settings.</p>
+        <button>Start</button>
+      </div>
+      
+      <div class="action-box" onclick="enterAsGuest()" style="background: rgba(255, 255, 255, 0.85);">
+        <h2 style="color: var(--secondary-color);">Anonymous Mode</h2>
+        <p>Start a session immediately without an account. (Data is local)</p>
+        <button style="background: var(--secondary-color);">Continue as Guest</button>
+      </div>
+      
+    </div>
+  </div>
+  
+  <div id="authModalBg" class="modal-bg">
+    <div id="authForm">
+        <p id="authPrompt" style="font-size: 1rem; color: var(--text-dark); margin-bottom: 20px;">Enter your email and password to proceed.</p>
+        
+        <input type="email" id="emailInput" placeholder="Your Email Address" required>
+        <input type="password" id="passwordInput" placeholder="Password" required> 
+        
+        <div class="button-group">
+            <button onclick="signIn()" style="background: var(--primary-color);">Sign In</button>
+            <button onclick="register()" style="background: var(--accent-color);">Register</button>
+        </div>
+        
+        <button onclick="closeAuthModal()" class="modal-cancel-btn">Cancel</button>
+    </div>
+  </div>
+
+  <script src="main.js"></script>
+</body>
+</html>
