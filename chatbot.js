@@ -1,7 +1,7 @@
 // Function to run the main chatbot logic after the page loads
 function initializeChatbot() {
     // ⚠️ CRITICAL: Ensure this is your actual, valid Gemini API Key!
-    const apiKey = "AIzaSyBZel2V-3WVqzoB4PAuwJ6UbCYgf18Sh5E"; 
+    const apiKey = "enter api key "; 
     const model = "gemini-2.0-flash"; 
 
     // URL is correct
